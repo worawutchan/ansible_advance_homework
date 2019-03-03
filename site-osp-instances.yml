@@ -1,15 +1,11 @@
 - hosts: workstation
 #  become: yes
   tasks:
-  - name: create frontend instance
-    include_role:
-      name: osp-servers
-      vars_from: frontend.yml
-  - name: create app instance
-    include_role:
-      name: osp-servers
-      vars_from: app.yml
-  - name: create db instance
-    include_role:
-      name: osp-servers
-      vars_from: db.yml
+  - name: include var from role osp-servers
+    include_vars:
+      file: ./roles/osp-servers/vars/main.yml 
+      name: all_servers
+
+  - debug:
+      var: all_servers
+  #  loop: "{ all_servers }"

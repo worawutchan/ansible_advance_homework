@@ -4,22 +4,22 @@
 - name: Create new server instances and attaches them a network and passes metadata to the instance
   os_server: 
     state: present 
-    name: "{{ instance_name }}" 
-    image: "rhel-guest"
-    key_name: ansible_ssh
+    name: "{{ item.value.name }}" 
+    image: "{{ item.value.image }}"
+    key_name: "{{ item.value.key_name }}" 
     wait: yes
-    flavor: m2.small
+    flavor: "{{ item.value.flavor }}"
     network: int_network
-    security_groups: "{{ security_group_name }}"
+    security_groups: "{{ item.value.security_group }}"
     meta:
-      group: "{{ group }}"
-      deployment_name: "{{ deployment }}"
+      group: "{{ item.value.meta.group }}"
+      deployment_name: "{{ item.value.meta.deployment_name }}"
   register: instanceipaddr
 
 - name: Add floating IP to Servers
   os_floating_ip:
     state: present
-    server: "{{ instance_name }}"
+    server: "{{ item.value.name }}"
     network: ext_network
     wait: true
     timeout: 180
