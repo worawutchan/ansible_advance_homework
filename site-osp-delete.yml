@@ -1,4 +1,4 @@
 - hosts: workstation
-  become: yes
+#  become: yes
   roles:
     - osp-instance-delete
