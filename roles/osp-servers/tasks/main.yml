@@ -10,7 +10,7 @@
     wait: yes
     flavor: m2.small
     network: int_network
-    security_groups: "{{ security_groupi_name }}"
+    security_groups: "{{ security_group_name }}"
     meta:
       group: "{{ group }}"
       deployment_name: "{{ deployment }}"
