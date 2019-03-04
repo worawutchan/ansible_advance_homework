@@ -4,22 +4,22 @@
 - name: Create new server instances and attaches them a network and passes metadata to the instance
   os_server: 
     state: present 
-    name: "{{ item.value.name }}" 
-    image: "{{ item.value.image }}"
-    key_name: "{{ item.value.key_name }}" 
+    name: "{{ instance_name }}" 
+    image: "{{ instance_image }}"
+    key_name: "{{ instance_key_name }}" 
     wait: yes
-    flavor: "{{ item.value.flavor }}"
+    flavor: "{{ instance_flavor }}"
     network: int_network
-    security_groups: "{{ item.value.security_group }}"
+    security_groups: "{{ instance_security_group }}"
     meta:
-      group: "{{ item.value.meta.group }}"
-      deployment_name: "{{ item.value.meta.deployment_name }}"
+      group: "{{ instance_group }}"
+      deployment_name: "{{ instance_deployment }}"
   register: instanceipaddr
 
 - name: Add floating IP to Servers
   os_floating_ip:
     state: present
-    server: "{{ item.value.name }}"
+    server: "{{ instance_name }}"
     network: ext_network
     wait: true
     timeout: 180

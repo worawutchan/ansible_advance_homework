@@ -1,11 +1,18 @@
 - hosts: workstation
 #  become: yes
+  vars_files:
+    - /root/ansible_advance_homework/roles/osp-servers/vars/main.yml
   tasks:
-  - name: include var from role osp-servers
-    include_vars:
-      file: ./roles/osp-servers/vars/main.yml 
-      name: all_servers
-
-  - debug:
-      var: all_servers
-  #  loop: "{ all_servers }"
+  - name: Create instance
+    include_role: 
+      name: osp-servers
+    vars:
+      instance_name: "{{ item.value.name }}"
+      instance_state: "{{ item.value.state }}"
+      instance_image: "{{ item.value.image }}"
+      instance_key_name: "{{ item.value.key_name }}"
+      instance_flavor: "{{ item.value.flavor }}"
+      instance_security_group: "{{ item.value.security_group }}"
+      instance_group: "{{ item.value.meta[0].group }}"
+      instance_deployment: "{{ item.value.meta[0].deployment_name }}"
+    loop: "{{ osp_servers | dict2items }}"
